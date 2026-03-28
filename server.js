@@ -6,7 +6,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const checkEnvVars = require('./config/env');
-const connectDB = require('./config/db');
+const { connectDB } = require('./config/db');
 const { errorHandler } = require('./middleware/errorHandler');
 
 // 1) Verify Environment Vars
