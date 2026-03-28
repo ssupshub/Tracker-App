@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A modern, secure learning tracker app to manage your subjects and topics.">
+  <title>Learning Tracker | Modern Edition</title>
+  
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+
+  <!-- AUTH SECTION (Visible when not logged in) -->
+  <main id="auth-section" class="app-container" style="display: none; height: 100vh; place-items: center; justify-content: center;">
+    
+    <!-- Login Form -->
+    <div id="login-container" class="glass-panel" style="width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: stretch;">
+      <h2>Welcome Back</h2>
+      <p style="margin-bottom: 2rem;">Log in to manage your learning.</p>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label" for="login-username">Username</label>
+          <input type="text" id="login-username" class="neu-input mono-text" placeholder="Enter username" required>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 2rem;">
+          <label class="form-label" for="login-password">Password</label>
+          <input type="password" id="login-password" class="neu-input mono-text" placeholder="••••••" required minlength="6">
+        </div>
+        
+        <button type="submit" class="neu-button primary" style="width: 100%;">Login</button>
+      </form>
+      
+      <p style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem;">
+        Don't have an account? <a href="#" id="show-register">Register</a>
+      </p>
+    </div>
+
+    <!-- Register Form -->
+    <div id="register-container" class="glass-panel" style="width: 100%; max-width: 400px; display: none; flex-direction: column; align-items: stretch;">
+      <h2>Create Account</h2>
+      <p style="margin-bottom: 2rem;">Start tracking your progress today.</p>
+      
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label" for="register-username">Username</label>
+          <input type="text" id="register-username" class="neu-input mono-text" placeholder="Enter username" required>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 2rem;">
+          <label class="form-label" for="register-password">Password</label>
+          <input type="password" id="register-password" class="neu-input mono-text" placeholder="••••••" required minlength="6">
+        </div>
+        
+        <button type="submit" class="neu-button primary" style="width: 100%;">Register</button>
+      </form>
+      
+      <p style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem;">
+        Already have an account? <a href="#" id="show-login">Login</a>
+      </p>
+    </div>
+  </main>
+
+
+  <!-- MAIN APP SECTION (Visible when logged in) -->
+  <main id="main-app" class="app-container animate-fade-in" style="display: none;">
+    <header class="header">
+      <div>
+        <h1>Learning Tracker</h1>
+        <p>Master your subjects, step by step.</p>
+      </div>
+      <button id="btn-logout" class="neu-button">Logout</button>
+    </header>
+
+    <div class="tracker-content">
+      <!-- Add Subject Form -->
+      <section class="glass-panel" style="margin-bottom: 2rem;">
+        <form id="subject-form" style="display: grid; grid-template-columns: 1fr auto; gap: 1rem;">
+          <input type="text" id="subject-input" class="neu-input" placeholder="What are you learning next?" required>
+          <button type="submit" class="neu-button primary">Add Subject</button>
+        </form>
+        
+        <!-- Progress Bar -->
+        <div style="margin-top: 2rem;">
+          <div style="display: flex; justify-content: space-between;">
+            <span class="form-label">Total Progress</span>
+            <span id="overall-progress-text" class="form-label" style="color: var(--text-primary); font-weight: 600;">0%</span>
+          </div>
+          <div class="progress-container">
+            <div id="overall-progress-bar" class="progress-bar"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Subjects List -->
+      <section id="subjects-list" class="subjects-grid">
+        <!-- Rendered dynamically by javascript -->
+      </section>
+    </div>
+  </main>
+
+  <!-- Load Modules -->
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>
