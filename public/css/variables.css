@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;600;700&display=swap');
+
+:root {
+  /* Colors */
+  --bg-base: #0d0d0f;
+  --bg-surface: #111114;
+  --accent-color: #7c3aed; /* Electric Violet */
+  --accent-hover: #6d28d9;
+  --accent-secondary: #00d4aa; /* Aurora Teal */
+
+  --text-primary: rgba(255, 255, 255, 0.9);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --text-inverse: #ffffff;
+  --error: #ef4444;
+  --success: #10b981;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-hover: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(16px);
+
+  /* Neumorphism (Adapted for Dark Mode) */
+  --neu-shadow-out: 6px 6px 12px #0a0a0a, -6px -6px 12px #1e1e1e;
+  --neu-shadow-in: inset 6px 6px 12px #0a0a0a, inset -6px -6px 12px #1e1e1e;
+
+  /* Typography */
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Transitions & Animation */
+  --transition-fast: 200ms ease;
+  --transition-normal: 350ms ease;
+
+  /* Layout */
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 24px;
+}
