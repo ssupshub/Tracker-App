@@ -38,7 +38,12 @@ app.use(express.json({ limit: '10kb' }));
 app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
-app.use(mongoSanitize());
+// Custom wrapper to avoid 'req.query' getter exception in Express 5
+app.use((req, res, next) => {
+  if (req.body) req.body = mongoSanitize.sanitize(req.body, { replaceWith: '_' });
+  if (req.params) req.params = mongoSanitize.sanitize(req.params, { replaceWith: '_' });
+  next();
+});
 
 // CORS configuration - allow explicit origins
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
