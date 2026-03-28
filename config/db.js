@@ -1,31 +1,23 @@
 const mongoose = require('mongoose');
 
+// Track database connection status globally
+let dbConnected = false;
+
 const connectDB = async () => {
-  const MAX_RETRIES = 5;
-  const RETRY_DELAY_MS = 5000;
-
-  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    try {
-      const conn = await mongoose.connect(process.env.MONGODB_URI, {
-        serverSelectionTimeoutMS: 5000,
-      });
-      console.log(`MongoDB Connected: ${conn.connection.host}`);
-      return; // success — stop retrying
-    } catch (error) {
-      console.error(
-        `MongoDB connection attempt ${attempt}/${MAX_RETRIES} failed: ${error.message}`
-      );
-      if (attempt < MAX_RETRIES) {
-        console.log(`Retrying in ${RETRY_DELAY_MS / 1000}s...`);
-        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
-      }
-    }
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 5000,
+    });
+    dbConnected = true;
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    dbConnected = false;
+    console.warn(`⚠ MongoDB unavailable: ${error.message}`);
+    console.warn('⚠ Running in IN-MEMORY mode — data will not persist across restarts.');
+    console.warn('⚠ Connect MongoDB anytime and restart to switch to persistent storage.\n');
   }
-
-  console.error(
-    'Could not connect to MongoDB after maximum retries. Please ensure MongoDB is running or update MONGODB_URI in your .env file.'
-  );
-  process.exit(1);
 };
 
-module.exports = connectDB;
+const isDBConnected = () => dbConnected;
+
+module.exports = { connectDB, isDBConnected };
