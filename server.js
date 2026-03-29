@@ -88,10 +88,17 @@ setTimeout(async () => {
       await User.create({ username: 'admin', password: 'admin' });
       console.log('✅ Test admin user created (admin / admin)');
     } else {
-      console.log('✅ Test admin user already exists (admin / admin)');
+      // If using real MongoDB, ensure the password is actually 'admin'
+      if (existing.save) {
+        existing.password = 'admin';
+        await existing.save();
+        console.log('✅ Test admin user password reset to (admin / admin)');
+      } else {
+        console.log('✅ Test admin user exists in memory (admin / admin)');
+      }
     }
   } catch (err) {
-    console.error('Failed to create test admin user:', err.message);
+    console.error('Failed to create/update test admin user:', err.message);
   }
 }, 2000);
 
