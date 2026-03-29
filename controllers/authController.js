@@ -11,7 +11,7 @@ const sendTokenResponse = (user, statusCode, res, message) => {
   const token = generateToken(user._id);
 
   const cookieOptions = {
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'Strict',
