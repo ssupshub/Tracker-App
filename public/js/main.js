@@ -20,19 +20,20 @@ stateStore.subscribe(renderUI);
 
 // Initialization / Hydration
 async function initApp() {
-  // Check if we have standard cached user or session
+  // Check if we have a cached user in localStorage
   const storedUser = localStorage.getItem('trackerUser');
   if (storedUser) {
     try {
       const u = JSON.parse(storedUser);
       stateStore.setState({ user: u });
-      await fetchSubjects();
+      // Fetch subjects silently — if session expired the 401 handler will clean up
+      fetchSubjects().catch(() => {});
     } catch {
       localStorage.removeItem('trackerUser');
     }
   }
 
-  // Initial render empty auth check
+  // Initial render
   renderUI(stateStore.getState());
 }
 
@@ -75,8 +76,8 @@ loginForm.addEventListener('submit', async (e) => {
   const u = document.getElementById('login-username');
   const p = document.getElementById('login-password');
 
-  if (!validateInput(u) || !validateInput(p, 6)) {
-    showToast('Please check inputs (pass >= 6 chars)', 'error');
+  if (!validateInput(u) || !validateInput(p, 5)) {
+    showToast('Please check inputs (pass >= 5 chars)', 'error');
     return;
   }
 
@@ -102,8 +103,8 @@ registerForm.addEventListener('submit', async (e) => {
   const u = document.getElementById('register-username');
   const p = document.getElementById('register-password');
 
-  if (!validateInput(u) || !validateInput(p, 6)) {
-    showToast('Please check inputs (pass >= 6 chars)', 'error');
+  if (!validateInput(u) || !validateInput(p, 5)) {
+    showToast('Please check inputs (pass >= 5 chars)', 'error');
     return;
   }
 
