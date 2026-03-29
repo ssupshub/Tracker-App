@@ -78,6 +78,23 @@ app.get('{*path}', (req, res) => {
 // 7) Global Error Handler
 app.use(errorHandler);
 
+const User = require('./models/User');
+
+// 8) Create test admin user asynchronously to allow DB connection to establish
+setTimeout(async () => {
+  try {
+    const existing = await User.findOne({ username: 'admin' });
+    if (!existing) {
+      await User.create({ username: 'admin', password: 'admin' });
+      console.log('✅ Test admin user created (admin / admin)');
+    } else {
+      console.log('✅ Test admin user already exists (admin / admin)');
+    }
+  } catch (err) {
+    console.error('Failed to create test admin user:', err.message);
+  }
+}, 2000);
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
