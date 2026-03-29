@@ -4,13 +4,10 @@ import { showToast } from './ui.js';
 const API_BASE = '/api';
 
 // Interceptor-like wrapper around fetch
-async function apiFetch(url, options = {}) {
+async function apiFetch(url, options = {}, isAuthEndpoint = false) {
   const mergedOptions = {
     ...options,
-    // By default, fetch won't send/receive cross-origin cookies.
-    // However, since we serve from the same origin, we can omit or keep 'same-origin'
-    // But for explicit measure to send JWT cookies:
-    credentials: 'true' ? 'include' : 'same-origin', 
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       ...(options.headers || {}),
@@ -21,10 +18,9 @@ async function apiFetch(url, options = {}) {
     const response = await fetch(`${API_BASE}${url}`, mergedOptions);
     const data = await response.json().catch(() => ({}));
 
-    // Handle 401 Unauthorized globally
-    if (response.status === 401) {
-      showToast('Session expired or unauthorized. Please login again.', 'error');
-      // Trigger logout cascade in main via state (or custom event)
+    // Handle 401 Unauthorized globally — but NOT for login/register attempts
+    if (response.status === 401 && !isAuthEndpoint) {
+      showToast('Session expired. Please login again.', 'error');
       document.dispatchEvent(new Event('auth:unauthorized'));
       throw new Error(data.message || 'Unauthorized');
     }
@@ -45,14 +41,14 @@ export async function login(username, password) {
   return apiFetch('/auth/login', {
     method: 'POST',
     body: JSON.stringify({ username, password }),
-  });
+  }, true); // isAuthEndpoint = true
 }
 
 export async function register(username, password) {
   return apiFetch('/auth/register', {
     method: 'POST',
     body: JSON.stringify({ username, password }),
-  });
+  }, true); // isAuthEndpoint = true
 }
 
 export async function logout() {
